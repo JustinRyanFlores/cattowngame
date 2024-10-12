@@ -1,0 +1,156 @@
+html,
+body {
+    height: 100%;
+    /* Ensure the body takes up the full height of the viewport */
+    margin: 0;
+    /* Remove default margin */
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    /* Stack items vertically */
+    justify-content: center;
+    /* Center items vertically */
+    align-items: center;
+    /* Center items horizontally */
+    background-image: url('/cattowngame/src/background.gif');
+    background-size: cover;
+    /* Ensures the GIF covers the entire background */
+    background-repeat: no-repeat;
+    /* Prevents the GIF from repeating */
+    background-position: center center;
+    /* Centers the GIF */
+    background-attachment: fixed;
+    /* Keeps the background fixed during scrolling */
+    color: #fff;
+    font-family: 'Press Start 2P', cursive;
+    text-align: center;
+}
+
+.hidden {
+    display: none;
+}
+
+.game-container {
+    position: relative;
+    width: 800px;
+    /* Increased width for larger display */
+    height: 800px;
+    /* Increased height for larger display */
+    margin: 50px auto;
+    border: 2px solid #333;
+    background-color: #7186ff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.coin {
+    width: 50px;
+    position: absolute;
+}
+
+.cat {
+    width: 150px;
+    position: absolute;
+    transition: top 0.05s, left 0.05s;
+}
+
+.score-board {
+    margin-top: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #ffffff;
+    /* White text for better visibility on dark background */
+}
+
+#play-button:hover,
+#retry-button:hover {
+    background-color: #45a049;
+}
+
+#game-over {
+    text-align: center;
+    font-size: 40px;
+    color: red;
+}
+
+.character-selection-container,
+.game-container,
+.score-board,
+#game-over {
+    width: 100%;
+    /* Optional: Set to 100% for responsiveness */
+    max-width: 800px;
+    /* Limit max width to avoid overflowing */
+}
+
+.character-options {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.cat-option {
+    width: 80px;
+    /* Adjust size as needed */
+    margin: 0 10px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.cat-option:hover {
+    transform: scale(1.1);
+}
+
+.cat-option.selected {
+    border: 3px solid #4CAF50;
+    /* Highlight the selected character */
+    border-radius: 10px;
+}
+
+.character {
+    display: inline-block;
+    text-align: center;
+    margin: 10px;
+}
+
+.character img {
+    width: 100px;
+}
+
+.character p {
+    color: #fff;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+h1,
+h2 {
+    margin-top: 20px;
+    color: #ffcc00;
+}
+
+.character-options img {
+    width: 100px;
+    margin: 10px;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.character-options img.selected {
+    border-color: #ffcc00;
+}
+
+.btn-retro {
+    font-size: 12px;
+    padding: 10px 20px;
+    background-color: #ffcc00;
+    border: 2px solid #000;
+    color: #000;
+    text-transform: uppercase;
+}
+
+.btn-retro:hover {
+    background-color: #fff;
+    color: #ffcc00;
+}
