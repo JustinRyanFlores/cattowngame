@@ -18,7 +18,7 @@ $timeLimit = 30;
     <!-- Add cache-busting query strings -->
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css?v=<?php echo time(); ?>"> <!-- Cache-bust CSS -->
-    
+
 </head>
 
 <body>
@@ -118,9 +118,57 @@ $timeLimit = 30;
 
     </div>
 
+    <div id="resize-overlay" class="overlay hidden">
+        <div class="overlay-content">
+            <h2>Resize Detected</h2>
+            <p>Please do not resize the window while playing.</p>
+        </div>
+    </div>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+
+    
+            document.addEventListener('contextmenu', function(event) {
+                event.preventDefault();
+            });
+
+            document.addEventListener('keydown', function(event) {
+                // Check if the pressed key is F12
+                if (event.key === 'F12') {
+                    event.preventDefault(); // Prevent the default action
+                }
+            });
+
+            const overlay = document.getElementById('resize-overlay');
+
+            // Add this screen size check to disable gameplay and show the overlay
+            function checkScreenSize() {
+                // Get the width considering zoom
+                const width = window.visualViewport ? window.visualViewport.width : window.innerWidth;
+
+                if (width > 1920 || width < 300) { // Adjust for your required minimum width
+                    overlay.classList.remove('hidden'); // Show the overlay
+                    disableGame(); // Disable the game functionality
+                    window.location.reload(); // Reload the page
+                }
+            }
+
+            // Disable game function to hide the game container and prevent any gameplay
+            function disableGame() {
+                const gameContainer = document.getElementById('game-container');
+                const scoreBoard = document.getElementById('score-board');
+                gameContainer.classList.add('hidden');
+                scoreBoard.classList.add('hidden');
+            }
+
+            // Add event listener for window resizing
+            window.addEventListener('resize', checkScreenSize);
+
+            // Call the function on page load to check initial screen size
+            checkScreenSize();
+
 
             // Joystick control variables
             const joystickContainer = document.getElementById('joystick-container');
