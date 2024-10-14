@@ -1,6 +1,4 @@
 <?php
-$initialX = 300;
-$initialY = 300;
 $timeLimit = 30;
 ?>
 <!DOCTYPE html>
@@ -10,102 +8,204 @@ $timeLimit = 30;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Get That Kibble!</title>
+
+    <!-- Cache busting by appending timestamp -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Add cache-busting query strings -->
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=<?php echo time(); ?>"> <!-- Cache-bust CSS -->
+    
 </head>
 
 <body>
 
-    <h1>Get That Kibble!</h1>
+    <div class="container text-center mt-4">
+        <h1>Get That Kibble!</h1>
 
-    <div class="character-selection-container" id="character-selection-container">
-        <h2>Select a Villager:</h2>
-        <div class="character-options">
-            <div class="character">
-                <img src="/cattowngame/src/tinytony.png" alt="Cat Model 1" class="cat-option" data-model="tinytony">
-                <p>Tiny Tony</p>
+        <div class="character-selection-container" id="character-selection-container">
+            <h2>Select a Villager:</h2>
+            <div class="row justify-content-center">
+                <div class="col-4 col-md-2 text-center">
+                    <img src="/cattowngame/src/tinytony.png" alt="Cat Model 1" class="cat-option img-fluid" data-model="tinytony">
+                    <p>Tiny Tony</p>
+                </div>
+                <div class="col-4 col-md-2 text-center">
+                    <img src="/cattowngame/src/bento.png" alt="Cat Model 2" class="cat-option img-fluid" data-model="bento">
+                    <p>Bento</p>
+                </div>
+                <div class="col-4 col-md-2 text-center">
+                    <img src="/cattowngame/src/jimmy.png" alt="Cat Model 3" class="cat-option img-fluid" data-model="jimmy">
+                    <p>Jimmy</p>
+                </div>
+                <div class="col-4 col-md-2 text-center">
+                    <img src="/cattowngame/src/isabela.png" alt="Cat Model 4" class="cat-option img-fluid" data-model="isabela">
+                    <p>Isabela</p>
+                </div>
+                <div class="col-4 col-md-2 text-center">
+                    <img src="/cattowngame/src/skipper.png" alt="Cat Model 5" class="cat-option img-fluid" data-model="skipper">
+                    <p>Skipper</p>
+                </div>
+                <div class="col-4 col-md-2 text-center">
+                    <img src="/cattowngame/src/theodore.png" alt="Cat Model 6" class="cat-option img-fluid" data-model="theodore">
+                    <p>Theodore</p>
+                </div>
             </div>
-            <div class="character">
-                <img src="/cattowngame/src/bento.png" alt="Cat Model 2" class="cat-option" data-model="bento">
-                <p>Bento</p>
-            </div>
-            <div class="character">
-                <img src="/cattowngame/src/jimmy.png" alt="Cat Model 3" class="cat-option" data-model="jimmy">
-                <p>Jimmy</p>
-            </div>
-            <div class="character">
-                <img src="/cattowngame/src/isabela.png" alt="Cat Model 4" class="cat-option" data-model="isabela">
-                <p>Isabela</p>
-            </div>
-            <div class="character">
-                <img src="/cattowngame/src/skipper.png" alt="Cat Model 5" class="cat-option" data-model="skipper">
-                <p>Skipper</p>
-            </div>
-            <div class="character">
-                <img src="/cattowngame/src/theodore.png" alt="Cat Model 6" class="cat-option" data-model="theodore">
-                <p>Theodore</p>
+            <input type="text" id="username-input" placeholder="Enter your username" class="form-control w-75 mx-auto my-3" required>
+            <button id="play-button" class="btn btn-retro btn-primary w-100">Play</button>
+            <button id="leaderboard-button" class="btn btn-retro btn-secondary w-100 mt-2">Leaderboard</button>
+        </div>
+
+        <!-- Leaderboard Modal -->
+        <div class="modal fade" id="leaderboardModal" tabindex="-1" role="dialog" aria-labelledby="leaderboardModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Leaderboard</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Username</th>
+                                    <th>Score</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leaderboard-body">
+                                <!-- Leaderboard entries will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
             </div>
         </div>
-        <input type="text" id="username-input" placeholder="Enter your username" class="form-control w-50 mx-auto my-3" required>
-        <button id="play-button" class="btn btn-retro">Play</button>
-        <button id="leaderboard-button" class="btn btn-retro">Leaderboard</button>
-    </div>
 
-    <!-- Leaderboard Modal -->
-    <div class="modal fade" id="leaderboardModal" tabindex="-1" role="dialog" aria-labelledby="leaderboardModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Leaderboard</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Rank</th>
-                                <th>Username</th>
-                                <th>Score</th>
-                            </tr>
-                        </thead>
-                        <tbody id="leaderboard-body">
-                            <!-- Leaderboard entries will be inserted here -->
-                        </tbody>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
+        <div id="game-over" class="hidden">
+            <h2>Game Over</h2>
+            <p>Your Score: <span id="final-score">0</span></p>
+            <button id="retry-button" class="btn btn-retro btn-primary w-100">Retry</button>
+            <button id="exit-button" class="btn btn-retro btn-danger w-100" onclick="location.reload();">Exit</button>
+
         </div>
+
+        <div class="game-container hidden" id="game-container">
+            <img src="/cattowngame/src/player.png" alt="Cat" class="cat img-fluid" id="cat">
+            <img src="/cattowngame/src/kibble.png" alt="Coin" class="coin img-fluid" id="coin">
+        </div>
+
+        <!-- Joystick -->
+        <div id="joystick-container" class="joystick-container">
+            <div id="joystick" class="joystick"></div>
+        </div>
+
+        <div class="score-board hidden" id="score-board">
+            Score: <span id="score">0</span> | Time Left: <span id="time-left"><?php echo $timeLimit; ?></span>s
+        </div>
+
+        <audio id="coin-sound" src="/cattowngame/src/coin-sound.mp3"></audio>
+        <audio id="bg-music" src="/cattowngame/src/background-music.mp3" loop></audio>
+        <audio id="select-sound" src="/cattowngame/src/select-sound.mp3"></audio>
+
     </div>
 
-    <div id="game-over" class="hidden">
-        <h2>Game Over</h2>
-        <p>Your Score: <span id="final-score">0</span></p>
-        <button id="retry-button" class="btn btn-retro">Retry</button>
-    </div>
-
-    <div class="game-container hidden" id="game-container">
-        <img src="/cattowngame/src/player.png" alt="Cat" class="cat" id="cat">
-        <img src="/cattowngame/src/kibble.png" alt="Coin" class="coin" id="coin">
-
-    </div>
-    <div class="score-board hidden" id="score-board">
-        Score: <span id="score">0</span> | Time Left: <span id="time-left"><?php echo $timeLimit; ?></span>s
-    </div>
-
-    <audio id="coin-sound" src="/cattowngame/src/coin-sound.mp3"></audio>
-    <audio id="bg-music" src="/cattowngame/src/background-music.mp3" loop></audio>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+
+            // Joystick control variables
+            const joystickContainer = document.getElementById('joystick-container');
+            const joystick = document.getElementById('joystick');
+            let joystickActive = false;
+            let joystickStartX = 0;
+            let joystickStartY = 0;
+            let joystickCurrentX = 0;
+            let joystickCurrentY = 0;
+
+            // Maximum distance joystick can move
+            const joystickMaxDistance = 40;
+
+            // Track touch or mouse events for joystick
+            joystick.addEventListener('mousedown', startJoystick);
+            joystick.addEventListener('touchstart', startJoystick, {
+                passive: false
+            });
+
+            document.addEventListener('mousemove', moveJoystick);
+            document.addEventListener('touchmove', moveJoystick, {
+                passive: false
+            });
+
+            document.addEventListener('mouseup', endJoystick);
+            document.addEventListener('touchend', endJoystick);
+
+            function startJoystick(event) {
+                joystickActive = true;
+                const touch = event.touches ? event.touches[0] : event;
+                joystickStartX = touch.clientX;
+                joystickStartY = touch.clientY;
+                event.preventDefault();
+            }
+
+            function moveJoystick(event) {
+                if (!joystickActive) return;
+
+                const touch = event.touches ? event.touches[0] : event;
+                joystickCurrentX = touch.clientX - joystickStartX;
+                joystickCurrentY = touch.clientY - joystickStartY;
+
+                const distance = Math.sqrt(joystickCurrentX * joystickCurrentX + joystickCurrentY * joystickCurrentY);
+                const angle = Math.atan2(joystickCurrentY, joystickCurrentX);
+
+                if (distance > joystickMaxDistance) {
+                    joystickCurrentX = joystickMaxDistance * Math.cos(angle);
+                    joystickCurrentY = joystickMaxDistance * Math.sin(angle);
+                }
+
+                joystick.style.transform = `translate(${joystickCurrentX}px, ${joystickCurrentY}px)`;
+
+                // Update cat movement based on joystick position
+                keys.w = joystickCurrentY < -10;
+                keys.s = joystickCurrentY > 10;
+                keys.a = joystickCurrentX < -10;
+                keys.d = joystickCurrentX > 10;
+            }
+
+            function endJoystick() {
+                joystickActive = false;
+                joystickCurrentX = 0;
+                joystickCurrentY = 0;
+                joystick.style.transform = `translate(0, 0)`;
+
+                // Stop movement when joystick is released
+                keys.w = keys.s = keys.a = keys.d = false;
+            }
+
+            document.addEventListener('keydown', (event) => {
+                const key = event.key.toLowerCase(); // Convert the key to lowercase
+                if (key === 'w') keys.w = true;
+                if (key === 'a') keys.a = true;
+                if (key === 's') keys.s = true;
+                if (key === 'd') keys.d = true;
+            });
+
+            document.addEventListener('keyup', (event) => {
+                const key = event.key.toLowerCase(); // Convert the key to lowercase
+                if (key === 'w') keys.w = false;
+                if (key === 'a') keys.a = false;
+                if (key === 's') keys.s = false;
+                if (key === 'd') keys.d = false;
+            });
+
             const cat = document.getElementById('cat');
             const coin = document.getElementById('coin');
             const scoreBoard = document.getElementById('score');
@@ -120,13 +220,25 @@ $timeLimit = 30;
             const coinSound = document.getElementById('coin-sound');
             const bgMusic = document.getElementById('bg-music');
 
-            let catX = <?php echo $initialX; ?>;
-            let catY = <?php echo $initialY; ?>;
-            let step = 20;
+            let step;
+
+            // Check if the user is on a mobile device
+            const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+
+            // Set step value based on device type
+            if (isMobile) {
+                step = 5; // Slower movement for mobile
+            } else {
+                step = 10; // Normal movement for desktop
+            }
+
             let score = 0;
             let timeLeft = <?php echo $timeLimit; ?>;
             let isGameOver = false;
             let selectedCatModel = 'tinytony'; // Default model
+
+            let catX = 0,
+                catY = 0; // Initialize these variables to track cat's position
 
             const keys = {
                 w: false,
@@ -134,6 +246,24 @@ $timeLimit = 30;
                 s: false,
                 d: false
             };
+
+            function centerCat() {
+                const catWidth = cat.width;
+                const catHeight = cat.height;
+                const gameWidth = gameContainer.clientWidth;
+                const gameHeight = gameContainer.clientHeight;
+
+                // Calculate the center position
+                catX = (gameWidth - catWidth) / 2;
+                catY = (gameHeight - catHeight) / 2;
+
+                // Set the initial position of the cat
+                cat.style.left = catX + 'px';
+                cat.style.top = catY + 'px';
+            }
+
+            // Use window.onload to ensure everything is fully loaded, including images
+            window.onload = centerCat;
 
             // Randomly place the coin within bounds
             function placeCoin() {
@@ -176,9 +306,11 @@ $timeLimit = 30;
                 }
             }
 
-            // Timer function
+            let timerInterval; // Move outside the function
+
             function startTimer() {
-                const timerInterval = setInterval(() => {
+                clearInterval(timerInterval); // Clear any existing interval before starting a new one
+                timerInterval = setInterval(() => {
                     if (timeLeft > 0) {
                         timeLeft--;
                         timeLeftBoard.textContent = timeLeft;
@@ -236,11 +368,7 @@ $timeLimit = 30;
                 scoreBoard.textContent = score;
                 timeLeftBoard.textContent = timeLeft;
 
-                catX = <?php echo $initialX; ?>;
-                catY = <?php echo $initialY; ?>;
-                cat.style.top = catY + 'px';
-                cat.style.left = catX + 'px';
-
+                centerCat();
                 placeCoin();
                 startTimer();
                 bgMusic.play();
@@ -269,31 +397,27 @@ $timeLimit = 30;
                 bgMusic.play(); // Start playing background music
                 placeCoin();
                 startTimer();
+                restartGame();
             });
 
             // Handle character selection
             document.querySelectorAll('.cat-option').forEach(option => {
                 option.addEventListener('click', () => {
+                    // Play sound effect
+                    const selectSound = document.getElementById('select-sound');
+                    selectSound.play();
+
+                    // Remove 'selected' class from all options and add to the clicked option
                     document.querySelectorAll('.cat-option').forEach(opt => opt.classList.remove('selected'));
                     option.classList.add('selected');
+
+                    // Set the selected cat model
                     selectedCatModel = option.getAttribute('data-model');
                 });
             });
 
-
-
-            // Movement event listeners
-            window.addEventListener('keydown', (e) => {
-                keys[e.key] = true;
-            });
-
-            window.addEventListener('keyup', (e) => {
-                keys[e.key] = false;
-            });
-
             // Update position based on key inputs at regular intervals
             setInterval(updatePosition, 1000 / 60);
-
 
             const leaderboardButton = document.getElementById('leaderboard-button');
             const leaderboardModal = $('#leaderboardModal');
@@ -339,10 +463,12 @@ $timeLimit = 30;
                     });
             }
 
-            // **Add this line to attach the event listener**
+            // Attach event listener to leaderboard button
             leaderboardButton.addEventListener('click', fetchLeaderboard);
         });
     </script>
+
+    <script src="game.js?v=<?php echo time(); ?>"></script> <!-- Cache-bust JS -->
 
 </body>
 
